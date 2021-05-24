@@ -1,0 +1,28 @@
+PODS:
+  - Aspects (1.4.1)
+  - SDWebImage (4.3.3):
+    - SDWebImage/Core (= 4.3.3)
+  - SDWebImage/Core (4.3.3)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
+
+DEPENDENCIES:
+  - Aspects
+  - SDWebImage
+  - YYKit
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Aspects
+    - SDWebImage
+    - YYKit
+
+SPEC CHECKSUMS:
+  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
+  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
+
+PODFILE CHECKSUM: 53ccfd9275b27c615423f0f28a611824eb09badb
+
+COCOAPODS: 1.5.0
