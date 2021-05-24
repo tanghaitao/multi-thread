@@ -68,6 +68,7 @@
 
     NSLog(@"来了");
 
+    
     if (self.t == nil || self.t.isCancelled || self.t.isFinished | self.t.isExecuting) {
         //点击后把之前的线程cancel然后重新开辟线程执行任务。
         //A: 1:开辟线程

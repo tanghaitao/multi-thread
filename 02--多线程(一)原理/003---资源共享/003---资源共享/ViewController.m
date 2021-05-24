@@ -47,6 +47,8 @@
 //        object 是自己的临时对象，对其他访问该区域的无影响
 //        可以锁self 那么访问该方法的时候所有的都锁住，可以根据需求特定锁
         
+         // 不加这个，可能 [NSThread sleepForTimeInterval:1];间隔内有2个人都买了票，
+        // self.tickets--操作，然后self.mArray添加的数据是一样的
         
         @synchronized (@(self.tickets)) {
             [NSThread sleepForTimeInterval:1];
