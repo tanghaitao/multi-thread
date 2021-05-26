@@ -30,7 +30,7 @@
     [[NSRunLoop currentRunLoop] addPort:self.myPort forMode:NSDefaultRunLoopMode];
 
     self.person = [[KCPerson alloc] init];
-    
+    NSLog(@"PortViewController:sendPortMessage  == %@",[NSThread currentThread]);
     [NSThread detachNewThreadSelector:@selector(personLaunchThreadWithPort:) toTarget:self.person withObject:self.myPort];
     
 }
@@ -39,9 +39,16 @@
 
 - (void)handlePortMessage:(NSPortMessage *)message{
     //[message valueForKey:@""]; // runtime --- ivarlist pro
+    NSLog(@"PortViewController:handlePortMessage  == %@",[NSThread currentThread]);
     NSLog(@"%@---",message);
     
     NSPort *port = [message valueForKey:@"remotePort"];
+//    NSArray *components =  [message valueForKey:@"components"];
+//    NSData *componentStr1 = (NSData *)(components.firstObject);
+//    NSString *str1 = [[NSString alloc] initWithData:componentStr1 encoding:NSUTF8StringEncoding];
+//    NSLog(@"str1 : %@",str1);
+    
+    [self getAllProperties:message];
     
     [[NSRunLoop currentRunLoop] addPort:port forMode:NSDefaultRunLoopMode];
     
@@ -65,6 +72,16 @@
         const char *propertyName = property_getName(properties[i]);
          NSLog(@"%@",[NSString stringWithUTF8String:propertyName]);
     }
+    
+//        unsigned int count = 0;
+//        Ivar* ivars = class_copyIvarList([message class], &count);
+//        for (int i = 0; i < count; i++) {
+//            Ivar var = ivars[i];
+//            const char* name = ivar_getName(var);
+//            NSString* key = [NSString stringWithUTF8String:name];
+//            id value = [message valueForKey:key];
+//            NSLog(@"key :%@, value :%@",key,value);
+//        }
 }
 
 - (void)didReceiveMemoryWarning {

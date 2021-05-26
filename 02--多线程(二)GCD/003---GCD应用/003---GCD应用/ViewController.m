@@ -25,21 +25,67 @@
     
     __weak typeof(self) weakSelf = self;
     
-    // sys 堵塞 --- 1: 用户体验 2 : 异步
-    [self requestToken:^(id value) {
-        weakSelf.token = value;
-
-        [weakSelf requestHeadDataWithToken:value handle:^(id value) {
-            NSLog(@"%@",value);
-            weakSelf.headData = value;
-        }];
-
-        [weakSelf requestListDataWithToken:value handle:^(id value) {
-            NSLog(@"%@",value);
-            weakSelf.listData = value;
-        }];
-    }];
+//    [self requestToken:^(id value) {
+//        weakSelf.token = value;
+//
+//        [weakSelf requestHeadDataWithToken:value handle:^(id value) {
+//            NSLog(@"%@",value);
+//            weakSelf.headData = value;
+//        }];
+//
+//        [weakSelf requestListDataWithToken:value handle:^(id value) {
+//            NSLog(@"%@",value);
+//            weakSelf.listData = value;
+//        }];
+//    }];
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
    
+//    dispatch_sync(queue, ^{
+//        [self requestToken:^(id value) {
+//            weakSelf.token = value;
+//        }];
+//    });
+//
+//    dispatch_async(queue, ^{
+//        [weakSelf requestHeadDataWithToken:self.token handle:^(id value) {
+//            NSLog(@"%@",value);
+//            weakSelf.headData = value;
+//        }];
+//    });
+//
+//    dispatch_async(queue, ^{
+//        [weakSelf requestListDataWithToken:self.token handle:^(id value) {
+//            NSLog(@"%@",value);
+//            weakSelf.listData = value;
+//        }];
+//    });
+    
+    dispatch_block_t task = ^{
+        //堵塞等待，体验差
+        dispatch_sync(queue, ^{
+            [self requestToken:^(id value) {
+                weakSelf.token = value;
+            }];
+        });
+        //异步，不知道什么时候调用完成，想异步回调后执行其他任务.
+        dispatch_async(queue, ^{
+            [weakSelf requestHeadDataWithToken:self.token handle:^(id value) {
+                NSLog(@"%@",value);
+                weakSelf.headData = value;
+            }];
+        });
+        
+        dispatch_async(queue, ^{
+            [weakSelf requestListDataWithToken:self.token handle:^(id value) {
+                NSLog(@"%@",value);
+                weakSelf.listData = value;
+            }];
+        });
+    };
+    
+    dispatch_async(queue, task);
+    
  
     NSLog(@"请求完毕了?我要去其他事情了");
 }
@@ -66,7 +112,7 @@
         NSLog(@"没有token,因为安全性无法请求数据");
         return;
     }
-    [NSThread sleepForTimeInterval:2];
+    [NSThread sleepForTimeInterval:1];
     successBlock(@"我是头,都听我的");
 }
 /**

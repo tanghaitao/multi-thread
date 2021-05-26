@@ -18,28 +18,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    [self textDemo2];
 //    [self globalAsyncTest];
-    
+
     __block int a = 0;
 //    dispatch_group_t t = dispatch_get_main_queue();
     // dispatch_get_global_queue : 并发队列
-//    while (a<5) { // 耗时足够长  ---  开辟线程能够调度回来  a++  线程不安全
+//    while (a<1) { // 耗时足够长  ---  开辟线程能够调度回来  a++  线程不安全
+//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//            a++;
+//            NSLog(@"%@===%d",[NSThread currentThread],a);
+//        });
+//    }
+    
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        
+
         while (a<5) {//声明在里面才正常
             NSLog(@"%@===%d",[NSThread currentThread],a);
             a++;
         }
     });
-//        }
-    NSLog(@"%@****%d",[NSThread currentThread],a);
-
-//    dispatch_sync(dispatch_get_global_queue(0, 0), ^{
 //
-//        NSLog(@"%@--------%d",[NSThread currentThread],a);
-//
-//    });
     
+    NSLog(@"%@****%d",[NSThread currentThread],a);
+//
+////    dispatch_sync(dispatch_get_global_queue(0, 0), ^{
+////
+////        NSLog(@"%@--------%d",[NSThread currentThread],a);
+////
+////    });
+//
     // a > 5
     // a = 5
     // a < 5
@@ -155,7 +163,7 @@
 
 - (void)textDemo{
     
-    dispatch_queue_t queue = dispatch_queue_create("cooci", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_queue_t queue = dispatch_queue_create("haitao", DISPATCH_QUEUE_CONCURRENT);
     NSLog(@"1");
     dispatch_async(queue, ^{
         NSLog(@"2");
@@ -270,16 +278,17 @@
     //3:利用函数把任务放入队列
     dispatch_sync(queue, taskBlock);
     
+    
 }
 
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
 
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-       
-        NSLog(@"%@",[NSThread currentThread]);
-    });
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//
+//        NSLog(@"%@",[NSThread currentThread]);
+//    });
 }
 
 

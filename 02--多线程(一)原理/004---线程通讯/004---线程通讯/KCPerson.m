@@ -24,7 +24,7 @@
         
         self.vcPort = port;
         
-        [[NSRunLoop currentRunLoop] run];//子线程runloop默认不开启，需要手动开启
+//        [[NSRunLoop currentRunLoop] run];//子线程runloop默认不开启，需要手动开启
         
         self.myPort = [NSMachPort port];
         
@@ -44,7 +44,7 @@
  */
 
 - (void)sendPortMessage {
-    
+    NSLog(@"person:sendPortMessage  == %@",[NSThread currentThread]);
     NSData *data = [@"玫瑰小镇" dataUsingEncoding:NSUTF8StringEncoding];
     NSData *data2 = [@"玫瑰小镇11" dataUsingEncoding:NSUTF8StringEncoding];
 
